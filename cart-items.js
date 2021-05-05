@@ -59,3 +59,34 @@ router.post("/cart-items", (req, res) => {
 	cartItems.push(newItem);
 	res.status(201).json(newItem);
 });
+
+router.put("/cart-items/:id", (req, res) => {
+	let updatedItem = req.body;
+	let resultIndex = cartItems.findIndex(
+		(item) => item.id === +req.params.id
+	);
+
+	if (resultIndex === -1) {
+		res.status(404);
+		res.json("ID Not Found");
+	} else {
+		cartItems.splice(resultIndex, 1, updatedItem);
+		res.json(updatedItem);
+	}
+});
+
+router.delete("/cart-items/:id", (req, res) => {
+	let resultIndex = cartItems.findIndex(
+		(item) => item.id === +req.params.id
+	);
+
+	if (resultIndex === -1) {
+		res.status(404);
+		res.json("ID Not Found");
+	} else {
+		cartItems.splice(resultIndex, 1);
+		res.status(204);
+	}
+});
+
+module.exports = router;
